@@ -1,0 +1,47 @@
+{% extends "propostas/layout.html" %}
+{% load static %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <h2>Criar Proposta</h2>
+                <form id="proposta-form" action="{% url 'proposta' %}" method="post">
+                    {% csrf_token %}
+                    {% for campo in campos_dinamicos %}
+                        <div class="form-group">
+                            <label for="campo-{{ campo.id }}">{{ campo.get_nome_display }}:</label>
+                            {% if campo.tipo == 'CharField' %}
+                                <input type="text" name="campo-{{ campo.nome }}" class="form-control" maxlength="{{ campo.tamanho_maximo }}" required>
+                            {% elif campo.tipo == 'IntegerField' %}
+                                <input type="number" name="campo-{{ campo.nome }}" class="form-control" required>
+                            {% elif campo.tipo == 'FloatField' %}
+                                <input type="number" name="campo-{{ campo.nome }}" class="form-control" step="any" required>
+                            {% elif campo.tipo == 'PhoneField' %}
+                                <input type="tel" name="campo-{{ campo.nome }}" class="form-control" pattern="^\+?[1-9]\d{1,14}$" required>
+                            {% elif campo.tipo == 'DateTimeField' %}
+                                <input type="datetime-local" name="campo-{{ campo.nome }}" class="form-control" required>
+                            {% elif campo.tipo == 'DateOfBirth' %}
+                                <input type="date" name="campo-{{ campo.nome }}" class="form-control" required>
+                            {% elif campo.tipo == 'EmailField' %}
+                                <input type="email" name="campo-{{ campo.nome }}" class="form-control" required>
+                            {% elif campo.tipo == 'BooleanField' %}
+                                <select name="campo-{{ campo.nome }}" class="form-control" required>
+                                    <option value="True">Sim</option>
+                                    <option value="False">Não</option>
+                                </select>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    {% if campos_dinamicos|length > 0 %}
+                        <button type="submit" class="btn btn-primary">Enviar Proposta</button>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'propostas/script.js' %}"></script>
+{% endblock %}

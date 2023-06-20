@@ -1,0 +1,33 @@
+{% extends "propostas/layout.html" %}
+{% load static %}
+
+{% block body %}
+    <div class="container">
+        <h1>Visualizar Propostas</h1>
+
+        <table class="table table-bordered table-centered">
+            <thead>
+                <tr>
+                    <th>Status</th>
+                    {% for campo in campos_dinamicos %}
+                        <th>{{ campo.get_nome_display }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for proposta, valores_campo_dinamico in propostas %}
+                    <tr>
+                        <td>{{ proposta.status }}</td>
+                        {% for valor in valores_campo_dinamico %}
+                            <td>{{ valor }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'propostas/script.js' %}"></script>
+{% endblock %}

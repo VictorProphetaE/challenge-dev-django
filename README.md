@@ -1,63 +1,70 @@
-# Sistema de Gestão de Propostas de Empréstimo Pessoal
+# Projeto com Docker, Celery e Django Rest Framework
 
-Este é um desafio técnico para criar um sistema de gestão de propostas de empréstimo pessoal utilizando a seguinte stack:
+Este repositório contém um aplicativo Django para gerenciar propostas com campos dinâmicos. 
+O aplicativo permite criar propostas com campos personalizados e realizar avaliações.
 
-- Django
-- Django Rest Framework
-- Django Celery
+## Requisitos
 
-## Desafio
+Certifique-se de ter os seguintes requisitos instalados em sua máquina:
 
-O objetivo deste desafio é criar um sistema onde os usuários possam cadastrar propostas de empréstimo pessoal e realizar sua avaliação através de uma fila RabbitMQ utilizando o Django Celery.
+- Docker
+- Docker Compose
 
-### Estrutura da Proposta
+- Django==3.2.4
+- Celery==5.1.0
+- djangorestframework==3.12.4
 
-O administrador do sistema poderá cadastrar os campos que devem constar na proposta através do django-admin. Por exemplo, os seguintes campos podem ser cadastrados:
+## Instalação
 
-- Nome Completo
-- CPF
-- Endereço
-- Valor do Empréstimo Pretendido
+Siga as etapas abaixo para configurar e executar o projeto em um ambiente Docker:
 
-### Página de Preenchimento da Proposta
-
-Deve ser criada uma página onde o possível cliente poderá preencher a proposta, utilizando os campos cadastrados anteriormente. É importante ressaltar que o frontend não deve fazer comunicação direta com o Django, toda a comunicação deve ser feita através do Django Rest Framework. O desenvolvedor pode utilizar um framework de sua preferência, como React, Vue, Angular, ou mesmo HTML com JS.
-
-### Avaliação da Proposta
-
-Após o preenchimento da proposta, a API deve registrar as informações no banco de dados e enviar a proposta para uma fila RabbitMQ. O Django Celery será responsável por avaliar a proposta, atribuindo um status de "Negada" ou "Aprovada". Para fins de teste, desenvolva um algoritmo onde metade das propostas serão negadas e metade serão aprovadas. Após a avaliação, o Django Celery deverá atualizar o status da proposta no banco de dados.
-
-### Visualização no Admin
-
-Dentro do Admin, será possível visualizar as propostas cadastradas juntamente com seus respectivos status, indicando se foram "Aprovadas" ou "Negadas".
-
-## Requisitos da Entrega do Projeto
-
-Para a entrega do projeto, certifique-se que tudo esteja em ambiente docker, preferencialmente, crie um docker-compose.yaml para que o projeto seja executado do modo mais simples possível, não se esqueça também dos seguintes detalhes
-
-1. Crie um README com as orientações para executar seu projeto
-2. Crie um usuário / senha padrão para o admin do sistema
-3. Caso algo em seu código não esteja inteligível, por favor, comente o trecho, imagine que outras pessoas darão manutenção no sistema
-
-## O que será avaliado no seu código
-- Organização do código
-- Separação de responsabilidades e manutenabilidade do sistema
-- Bom funcionamento e performance
-
-## O que *NÃO* será avaliado no seu código
-- Layout do front-end
-- CSS
-- Habilidade com Javascript (conseguindo realizar as chamadas à API estará 'good enough')
-
-## Prazo para entrega do desafio
-
-Consideramos que o prazo ideal para entrega desse desafio é de 1 semana, mas caso precise de mais tempo, favor avisar através do e-mail code-challenge@digitalsys.com.br
-
-## Como devo enviar o código feito?
-
-Para enviar o desafio, por favor nos envie o link de seu github no e-mail code-challenge@digitalsys.com.br.
-
-### Boa sorte =) 
+1. Clone o repositório para a sua máquina local:
+    `git clone <URL_DO_REPOSITORIO>`
+2. Navegue até o diretório raiz do projeto.
+    `cd <NOME_DO_DIRETORIO>`
+3. Execute o seguinte comando para construir as imagens do Docker e iniciar os contêineres:
+    `docker-compose up -d --build`
+4. Após o comando ser executado com sucesso, você poderá acessar o aplicativo em seu navegador usando o seguinte URL:
+    `http://localhost:8000`
 
 
+## Criação de Usuário
+
+Antes de começar a usar o aplicativo, você precisa criar um superusuário e um usuário dentro do ambiente Docker.
+
+Para criar um superusuário, execute o seguinte comando dentro do contêiner Docker:
+    `docker exec -it <nome do contêiner> python manage.py createsuperuse`
+
+Siga as instruções na linha de comando para fornecer um nome de usuário, endereço de e-mail e senha para o superusuário.
+
+Para criar um usuário regular, você pode usar a interface de administração do Django. Acesse http://localhost:8000/admin/ em seu navegador da web e faça login usando as credenciais do superusuário. Em seguida, clique em "Usuários" e "Adicionar" para criar um novo usuário.
+
+## Sobre o Aplicativo
+
+O aplicativo de propostas permite criar propostas com campos dinâmicos. Os campos dinâmicos são definidos no modelo CampoDinamico e podem ser de diferentes tipos, como `CharField`, `IntegerField`, `FloatField`, etc.
+
+Os usuários podem enviar propostas preenchendo os campos dinâmicos necessários. As propostas são salvas no modelo Proposta e estão associadas aos campos dinâmicos por meio do modelo `ValorCampoDinamico`.
+
+Os usuários podem visualizar todas as propostas enviadas e seus respectivos valores de campo dinâmico. Essa funcionalidade é implementada na visualização `visualizar_propostas`.
+
+O aplicativo possui as seguintes URLs:
+
+- `/`: Página inicial com informações sobre as propostas.
+- `/login`: Página de login para autenticação.
+- `/logout`: Página para fazer logout do aplicativo.
+- `/propostas/`: Página para visualizar todas as propostas cadastradas.
+- `/propostas/enviar`: Página para enviar uma nova proposta.
+
+## Documentação da API
+
+O aplicativo também oferece uma API RESTful para gerenciar as propostas. Aqui estão algumas das principais URLs da API:
+
+- `/api/propostas/`: Endpoint para listar e criar propostas.
+- `/api/propostas/<id>/`: Endpoint para visualizar, atualizar e excluir uma proposta específica.
+
+Consulte a documentação completa da API para obter mais detalhes sobre as URLs e os métodos disponíveis.
+
+## Tarefas em segundo plano com Celery
+
+O projeto utiliza o Celery para executar tarefas em segundo plano. O processamento de avaliação de propostas é executado em segundo plano quando uma nova proposta é enviada. O resultado da avaliação é atualizado automaticamente no aplicativo.
 

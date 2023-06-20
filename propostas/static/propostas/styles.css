@@ -1,0 +1,23 @@
+body{
+    font-family: Verdana, Geneva, Tahoma,Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    max-width: 100%;
+    height: auto;
+}
+
+html,body{
+  min-width:400px;
+}
+
+body,html{
+  height:100%;
+  margin:0;
+  padding:0
+}
+
+.table-centered {
+  margin: 0 auto;
+}
+
+/*# sourceMappingURL=styles.css.map */

@@ -1,0 +1,10 @@
+Username: foo
+Email address: foo@email.com
+password: foobar123
+
+
+usuario de teste
+Username: usuario1
+Email address: usuario1@email.com
+Password: 123456789-*
+Password: 123456789-*
