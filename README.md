@@ -19,12 +19,13 @@ Certifique-se de ter os seguintes requisitos instalados em sua máquina:
 Siga as etapas abaixo para configurar e executar o projeto em um ambiente Docker:
 
 1. Clone o repositório para a sua máquina local:
-    `git clone <URL_DO_REPOSITORIO>`
+    `git clone https://github.com/VictorProphetaE/challenge-dev-django.git`
 2. Navegue até o diretório raiz do projeto.
     `cd <NOME_DO_DIRETORIO>`
-3. Execute o seguinte comando para construir as imagens do Docker e iniciar os contêineres:
+   Nome do diretorio para onde foi clonado
+4. Execute o seguinte comando para construir as imagens do Docker e iniciar os contêineres:
     `docker-compose up -d --build`
-4. Após o comando ser executado com sucesso, você poderá acessar o aplicativo em seu navegador usando o seguinte URL:
+5. Após o comando ser executado com sucesso, você poderá acessar o aplicativo em seu navegador usando o seguinte URL:
     `http://localhost:8000`
 
 
